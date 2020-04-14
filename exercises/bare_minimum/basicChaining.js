@@ -17,15 +17,22 @@ var pc = require('./promiseConstructor');
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
 
-  return pc.pluckFirstLineFromFileAsync(readFilePath)
-    .then(fied.getGitHubProfileAsync())
-    .then( (data) => {
+  var writeToFile = function (data) {
+    return new Promise ( (resolve, reject) => {
       fs.writeFile(writeFilePath, data, (err) => {
         if (err) {
-          throw 'man wtf';
+          return reject(err);
+        } else {
+          resolve(data);
         }
       });
-    })
+    });
+
+  };
+
+  return pc.pluckFirstLineFromFileAsync(readFilePath)
+    .then(fied.getGitHubProfileAsync)
+    .then(writeToFile)
     .catch( (err) => {
       console.error(err);
     });
