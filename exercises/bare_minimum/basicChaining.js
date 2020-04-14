@@ -19,11 +19,11 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
 
   var writeToFile = function (data) {
     return new Promise ( (resolve, reject) => {
-      fs.writeFile(writeFilePath, data, (err) => {
+      fs.writeFile(writeFilePath, JSON.stringify(data), (err) => {
         if (err) {
           return reject(err);
         } else {
-          resolve(data);
+          resolve();
         }
       });
     });
